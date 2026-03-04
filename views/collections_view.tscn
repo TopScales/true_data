@@ -1,0 +1,234 @@
+[gd_scene format=3 uid="uid://dw26htib886j6"]
+
+[ext_resource type="Script" uid="uid://cpga4gw3l0jth" path="res://addons/true_data/views/collections_view.gd" id="1_68lli"]
+[ext_resource type="Script" uid="uid://b0yu8vxdx7yts" path="res://addons/true_data/views/configuration.gd" id="2_jn2uj"]
+
+[sub_resource type="DPITexture" id="DPITexture_jn2uj"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ffdd65\" d=\"M8 2a1 1 0 0 0-.85.484l-6 10A1 1 0 0 0 2 14h12a1 1 0 0 0 .857-1.514l-6-10a1 1 0 0 0-.85-.484zM7 5h2v5H7zm0 6h2v2H7z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[sub_resource type="DPITexture" id="DPITexture_akri2"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zm1 3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zm5.25 0a1 1 0 0 1 1 1v1.75H11a1 1 0 0 1 1 1v.5a1 1 0 0 1-1 1H9.25V11a1 1 0 0 1-1 1h-.5a1 1 0 0 1-1-1V9.25H5a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1h1.75V5a1 1 0 0 1 1-1z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[sub_resource type="DPITexture" id="DPITexture_7vqag"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M15 6v8a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-3h2v2h8V7h-3a1 1 0 0 1-1-1V3H5v4H3V2a1 1 0 0 1 1-1h6zm-9 6v-2H1V8h5V6l3 3z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[sub_resource type="DPITexture" id="DPITexture_ifvsm"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M4 1 3 3l1 2v4H2v3.5a2.5 2.5 0 0 0 5 0V9H5V5l1-2-1-2zm6 .174a3 3 0 0 0 0 5.652V14a1 1 0 0 0 2 0V6.824a3 3 0 0 0 0-5.648V4a1 1 0 0 1-2 0z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[sub_resource type="DPITexture" id="DPITexture_mjj8y"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" xml:space=\"preserve\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M2 2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3.738a2.5 2.5 0 0 1-.238-1.074 2.49 2.49 0 0 1 2.5-2.5c.565 0 1.083.187 1.5.5.417-.313.935-.5 1.5-.5s1.083.187 1.5.5a2.5 2.5 0 0 1 2.5-.295V6a1 1 0 0 0-1-1h-4a1 1 0 0 1-1-1V3a1 1 0 0 0-1-1Zm5.408 13.355.074.018q-.038-.008-.074-.018m.35.06\"/><path fill=\"#e0e0e0\" d=\"M9 13a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[node name="CollectionsView" type="ScrollContainer" unique_id=854151137]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_68lli")
+
+[node name="MainContainer" type="VBoxContainer" parent="." unique_id=1880163513]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CollectionsLabel" type="Label" parent="MainContainer" unique_id=1922989857]
+layout_mode = 2
+text = "Data Collections"
+horizontal_alignment = 1
+
+[node name="NoCollectionsWarning" type="Button" parent="MainContainer" unique_id=483390271]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "A collection resource needs to be set up first"
+icon = SubResource("DPITexture_jn2uj")
+
+[node name="ToolsContainer" type="HBoxContainer" parent="MainContainer" unique_id=1804931647]
+layout_mode = 2
+
+[node name="NumCollectionsLabel" type="Label" parent="MainContainer/ToolsContainer" unique_id=1796026569]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Collections: 0"
+
+[node name="NewCollection" type="Button" parent="MainContainer/ToolsContainer" unique_id=1384310325]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+icon = SubResource("DPITexture_akri2")
+flat = true
+icon_alignment = 1
+
+[node name="AddCollection" type="Button" parent="MainContainer/ToolsContainer" unique_id=1206891217]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+icon = SubResource("DPITexture_7vqag")
+flat = true
+icon_alignment = 1
+
+[node name="Configuration" type="Button" parent="MainContainer/ToolsContainer" unique_id=1647333732]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+icon = SubResource("DPITexture_ifvsm")
+flat = true
+icon_alignment = 1
+
+[node name="Space1" type="Control" parent="MainContainer" unique_id=1733865567]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="HeadersContainer" type="HBoxContainer" parent="MainContainer" unique_id=2120137859]
+layout_mode = 2
+
+[node name="NameHeader" type="Button" parent="MainContainer/HeadersContainer" unique_id=1894763829]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Name"
+
+[node name="LocationHeader" type="Button" parent="MainContainer/HeadersContainer" unique_id=1520007185]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Location"
+
+[node name="TypeHeader" type="Button" parent="MainContainer/HeadersContainer" unique_id=1481245628]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+disabled = true
+text = "Type"
+
+[node name="EntriesHeader" type="Button" parent="MainContainer/HeadersContainer" unique_id=263290920]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+disabled = true
+text = "Entries"
+
+[node name="LoadHeader" type="Button" parent="MainContainer/HeadersContainer" unique_id=2046852693]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+disabled = true
+text = "Load"
+
+[node name="Space" type="Control" parent="MainContainer/HeadersContainer" unique_id=1515031736]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+
+[node name="Configuration" type="ConfirmationDialog" parent="." unique_id=636272822]
+oversampling_override = 1.0
+title = "True Data Configuration"
+position = Vector2i(0, 36)
+size = Vector2i(600, 321)
+script = ExtResource("2_jn2uj")
+
+[node name="ConfigurationContainer" type="VBoxContainer" parent="Configuration" unique_id=1184260234]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -61.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DirectoryLabel" type="Label" parent="Configuration/ConfigurationContainer" unique_id=150965905]
+layout_mode = 2
+text = "Collections Directory:"
+
+[node name="DirectoryContainer" type="HBoxContainer" parent="Configuration/ConfigurationContainer" unique_id=658640654]
+layout_mode = 2
+
+[node name="DirectoryEdit" type="LineEdit" parent="Configuration/ConfigurationContainer/DirectoryContainer" unique_id=1657137115]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DirectoryBrowseButton" type="Button" parent="Configuration/ConfigurationContainer/DirectoryContainer" unique_id=1781211458]
+layout_mode = 2
+icon = SubResource("DPITexture_mjj8y")
+flat = true
+icon_alignment = 1
+
+[node name="Space" type="Control" parent="Configuration/ConfigurationContainer" unique_id=1322416]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="FileLabel" type="Label" parent="Configuration/ConfigurationContainer" unique_id=1568193176]
+layout_mode = 2
+text = "Collections File:"
+
+[node name="FileContainer" type="HBoxContainer" parent="Configuration/ConfigurationContainer" unique_id=738856752]
+layout_mode = 2
+
+[node name="FileEdit" type="LineEdit" parent="Configuration/ConfigurationContainer/FileContainer" unique_id=2110116909]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ExtensionOption" type="OptionButton" parent="Configuration/ConfigurationContainer/FileContainer" unique_id=2113493353]
+unique_name_in_owner = true
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = ".tres"
+popup/item_0/id = 0
+popup/item_1/text = ".res"
+popup/item_1/id = 1
+
+[node name="Control" type="Control" parent="Configuration/ConfigurationContainer" unique_id=289546171]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="FileDialog" type="FileDialog" parent="." unique_id=9262958]
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+size = Vector2i(960, 680)
+
+[connection signal="pressed" from="MainContainer/NoCollectionsWarning" to="." method="_on_no_collections_warning_pressed"]
+[connection signal="pressed" from="MainContainer/ToolsContainer/NewCollection" to="." method="_on_new_collection_pressed"]
+[connection signal="pressed" from="MainContainer/ToolsContainer/AddCollection" to="." method="_on_add_collection_pressed"]
+[connection signal="pressed" from="MainContainer/ToolsContainer/Configuration" to="." method="_on_configuration_pressed"]
+[connection signal="confirmed" from="Configuration" to="." method="_on_configuration_confirmed"]
+[connection signal="confirmed" from="Configuration" to="Configuration" method="_on_confirmed"]
+[connection signal="text_changed" from="Configuration/ConfigurationContainer/DirectoryContainer/DirectoryEdit" to="Configuration" method="_on_directory_edit_text_changed"]
+[connection signal="pressed" from="Configuration/ConfigurationContainer/DirectoryContainer/DirectoryBrowseButton" to="Configuration" method="_on_directory_browse_button_pressed"]
+[connection signal="text_changed" from="Configuration/ConfigurationContainer/FileContainer/FileEdit" to="Configuration" method="_on_file_edit_text_changed"]
+[connection signal="text_submitted" from="Configuration/ConfigurationContainer/FileContainer/FileEdit" to="Configuration" method="_on_file_edit_text_submitted"]
