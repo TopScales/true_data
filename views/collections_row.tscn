@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://875rkbdduas6" path="res://addons/true_data/views/collections_row.gd" id="1_fs3oc"]
 
-[sub_resource type="DPITexture" id="DPITexture_mjj8y"]
+[sub_resource type="DPITexture" id="DPITexture_fs3oc"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" xml:space=\"preserve\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M2 2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3.738a2.5 2.5 0 0 1-.238-1.074 2.49 2.49 0 0 1 2.5-2.5c.565 0 1.083.187 1.5.5.417-.313.935-.5 1.5-.5s1.083.187 1.5.5a2.5 2.5 0 0 1 2.5-.295V6a1 1 0 0 0-1-1h-4a1 1 0 0 1-1-1V3a1 1 0 0 0-1-1Zm5.408 13.355.074.018q-.038-.008-.074-.018m.35.06\"/><path fill=\"#e0e0e0\" d=\"M9 13a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0\"/></svg>
 "
 saturation = 2.0
@@ -59,7 +59,17 @@ color_map = {
 Color(0.4117647, 0.6117647, 0.9098039, 1): Color(0.337, 0.62, 1, 1)
 }
 
-[sub_resource type="DPITexture" id="DPITexture_fs3oc"]
+[sub_resource type="DPITexture" id="DPITexture_3x4qc"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m7 1c-.554 0-1 .446-1 1v2h4v-2c0-.554-.446-1-1-1zm-1 4v7l2 3 2-3v-7zm1 1h1v5h-1z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[sub_resource type="DPITexture" id="DPITexture_7c72s"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m5 1v1h-4v2h14v-2h-4v-1zm-3 4v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8zm1 2h2v6h-2zm4 0h2v6h-2zm4 0h2v6h-2z\"/></svg>
 "
 saturation = 2.0
@@ -82,54 +92,81 @@ size_flags_horizontal = 3
 placeholder_text = "(Name)"
 flat = true
 
-[node name="LocationContainer" type="HBoxContainer" parent="." unique_id=620823828]
+[node name="PathContainer" type="HBoxContainer" parent="." unique_id=620823828]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LocationLabel" type="Label" parent="LocationContainer" unique_id=1856599779]
+[node name="PathLabel" type="Label" parent="PathContainer" unique_id=1856599779]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LocationBrowseButton" type="Button" parent="LocationContainer" unique_id=1894047797]
+[node name="PathBrowseButton" type="Button" parent="PathContainer" unique_id=1894047797]
 layout_mode = 2
-icon = SubResource("DPITexture_mjj8y")
+icon = SubResource("DPITexture_fs3oc")
 flat = true
 icon_alignment = 1
 
-[node name="TypeOption" type="OptionButton" parent="." unique_id=1780044263]
-custom_minimum_size = Vector2(260, 0)
+[node name="ScriptButton" type="Button" parent="." unique_id=1471430473]
+custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
+text = "..."
+icon_alignment = 1
+
+[node name="TypeOption" type="OptionButton" parent="." unique_id=1531859437]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
 selected = 0
-item_count = 4
+item_count = 5
 popup/item_0/text = "Files"
 popup/item_0/icon = SubResource("DPITexture_vqrm6")
 popup/item_0/id = 0
-popup/item_1/text = "Dictionary"
+popup/item_1/text = "Dictionary (String)"
 popup/item_1/icon = SubResource("DPITexture_s2smy")
 popup/item_1/id = 1
-popup/item_2/text = "Array"
-popup/item_2/icon = SubResource("DPITexture_licci")
+popup/item_2/text = "Dictionary (int)"
+popup/item_2/icon = SubResource("DPITexture_s2smy")
 popup/item_2/id = 2
-popup/item_3/text = "Config"
-popup/item_3/icon = SubResource("DPITexture_uqpfr")
+popup/item_3/text = "Array"
+popup/item_3/icon = SubResource("DPITexture_licci")
 popup/item_3/id = 3
+popup/item_4/text = "Config"
+popup/item_4/icon = SubResource("DPITexture_uqpfr")
+popup/item_4/id = 4
 
 [node name="EntriesLabel" type="Label" parent="." unique_id=1439728097]
-custom_minimum_size = Vector2(160, 0)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
 [node name="LoadCheck" type="Button" parent="." unique_id=481858748]
-custom_minimum_size = Vector2(160, 0)
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+toggle_mode = true
 icon = SubResource("DPITexture_n6bwf")
+flat = true
+icon_alignment = 1
+
+[node name="EditButton" type="Button" parent="." unique_id=1586995430]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+icon = SubResource("DPITexture_3x4qc")
 flat = true
 icon_alignment = 1
 
 [node name="DeleteButton" type="Button" parent="." unique_id=1957873885]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
-icon = SubResource("DPITexture_fs3oc")
+icon = SubResource("DPITexture_7c72s")
 flat = true
 icon_alignment = 1
+
+[connection signal="editing_toggled" from="NameEdit" to="." method="_on_name_edit_editing_toggled"]
+[connection signal="text_submitted" from="NameEdit" to="." method="_on_name_edit_text_submitted"]
+[connection signal="pressed" from="PathContainer/PathBrowseButton" to="." method="_on_path_browse_button_pressed"]
+[connection signal="pressed" from="ScriptButton" to="." method="_on_script_button_pressed"]
+[connection signal="toggled" from="LoadCheck" to="." method="_on_load_check_toggled"]
+[connection signal="pressed" from="EditButton" to="." method="_on_edit_button_pressed"]
+[connection signal="pressed" from="DeleteButton" to="." method="_on_delete_button_pressed"]

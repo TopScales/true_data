@@ -1,10 +1,16 @@
 ##
 ##
-class_name ResourceIntDict
+@tool
+class_name CollectionArray
 extends Resource
+
+@export var arr: Array[Resource]
 
 # =============================================================
 # ========= Public Functions ==================================
+
+func size() -> int:
+	return arr.size()
 
 # =============================================================
 # ========= Built-in Functions ================================

@@ -1,31 +1,23 @@
 ##
 ##
-class_name ResourceStringDict
-extends Resource
+@tool
+extends MarginContainer
 
-@export var dict: Dictionary[StringName, Resource]
+var undoredo: EditorUndoRedoManager:
+	set(value):
+		undoredo = value
+		_current_view.undoredo = undoredo
+
+var _current_view: Control
 
 # =============================================================
 # ========= Public Functions ==================================
 
-func size() -> int:
-	return dict.size()
-
 # =============================================================
 # ========= Built-in Functions ================================
 
-func _set(property: StringName, value: Variant) -> bool:
-	if dict.has(property):
-		assert(value is Resource)
-		dict[property] = value
-		return true
-	return false
-
-
-func _get(property: StringName) -> Variant:
-	if dict.has(property):
-		return dict[property]
-	return null
+func _ready() -> void:
+	_current_view = $CurrentView.get_child(0)
 
 # =============================================================
 # ========= Virtual Methods ===================================

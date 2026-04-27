@@ -1,19 +1,17 @@
 ##
 ##
 @tool
-extends ResourceStringDict
+class_name CollectionIntDict
+extends Resource
 
-enum CollectionType { FILES, DICTIONARY, ARRAY, CONFIG }
-
-class Collection:
-	@export var location: String
-	@export var type: int = 0
-	@export var entries: int = 0
-	@export var load_collection: bool = true
-
+@export var dict: Dictionary[int, Resource]
 
 # =============================================================
 # ========= Public Functions ==================================
+
+
+func size() -> int:
+	return dict.size()
 
 # =============================================================
 # ========= Built-in Functions ================================
