@@ -45,8 +45,11 @@ Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 }
 
 [node name="CollectionsView" type="VBoxContainer" unique_id=1880163513]
-offset_right = 1152.0
-offset_bottom = 648.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_68lli")
@@ -60,8 +63,17 @@ horizontal_alignment = 1
 visible = false
 layout_mode = 2
 size_flags_horizontal = 4
-text = "A collection resource needs to be set up first"
+text = "A collections resource needs to be set up first"
 icon = SubResource("DPITexture_ifvsm")
+flat = true
+
+[node name="IncorrectCollectionsWarning" type="Button" parent="." unique_id=1078233709]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Collections resource not found or not valid"
+icon = SubResource("DPITexture_ifvsm")
+flat = true
 
 [node name="ToolsContainer" type="HBoxContainer" parent="." unique_id=1804931647]
 layout_mode = 2
@@ -76,6 +88,7 @@ text = "Collections: 0"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
+disabled = true
 icon = SubResource("DPITexture_mjj8y")
 flat = true
 icon_alignment = 1
@@ -84,6 +97,7 @@ icon_alignment = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
+disabled = true
 icon = SubResource("DPITexture_akri2")
 flat = true
 icon_alignment = 1
@@ -99,44 +113,61 @@ icon_alignment = 1
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
-[node name="HeadersContainer" type="HBoxContainer" parent="." unique_id=2120137859]
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=569990840]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="NameHeader" type="Button" parent="HeadersContainer" unique_id=1894763829]
+[node name="Spreadsheet" type="VBoxContainer" parent="ScrollContainer" unique_id=175187014]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HeadersContainer" type="HBoxContainer" parent="ScrollContainer/Spreadsheet" unique_id=2120137859]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="NameHeader" type="Button" parent="ScrollContainer/Spreadsheet/HeadersContainer" unique_id=1894763829]
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
 text = "Name"
 
-[node name="PathHeader" type="Button" parent="HeadersContainer" unique_id=1520007185]
+[node name="PathHeader" type="Button" parent="ScrollContainer/Spreadsheet/HeadersContainer" unique_id=1520007185]
 layout_mode = 2
 size_flags_horizontal = 3
+disabled = true
 text = "Location"
 
-[node name="ScriptHeader" type="Button" parent="HeadersContainer" unique_id=1441531177]
+[node name="ScriptHeader" type="Button" parent="ScrollContainer/Spreadsheet/HeadersContainer" unique_id=1441531177]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
+disabled = true
 text = "Script"
 
-[node name="TypeHeader" type="Button" parent="HeadersContainer" unique_id=1481245628]
+[node name="TypeHeader" type="Button" parent="ScrollContainer/Spreadsheet/HeadersContainer" unique_id=1481245628]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
 text = "Type"
 
-[node name="EntriesHeader" type="Button" parent="HeadersContainer" unique_id=263290920]
+[node name="EntriesHeader" type="Button" parent="ScrollContainer/Spreadsheet/HeadersContainer" unique_id=263290920]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+disabled = true
 text = "Entries"
 
-[node name="LoadHeader" type="Button" parent="HeadersContainer" unique_id=2046852693]
+[node name="LoadHeader" type="Button" parent="ScrollContainer/Spreadsheet/HeadersContainer" unique_id=2046852693]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+disabled = true
 text = "Load"
 
-[node name="Space" type="Control" parent="HeadersContainer" unique_id=1515031736]
+[node name="Space" type="Control" parent="ScrollContainer/Spreadsheet/HeadersContainer" unique_id=1515031736]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 
-[node name="Space2" type="Control" parent="HeadersContainer" unique_id=1993167975]
+[node name="Space2" type="Control" parent="ScrollContainer/Spreadsheet/HeadersContainer" unique_id=1993167975]
 custom_minimum_size = Vector2(32, 0)
 layout_mode = 2
 
@@ -148,10 +179,11 @@ visible = false
 
 [node name="DeleteConfirmation" type="ConfirmationDialog" parent="." unique_id=772334085]
 oversampling_override = 1.0
-size = Vector2i(293, 100)
+size = Vector2i(314, 108)
 dialog_text = "Delete collection \"\"?"
 
 [connection signal="pressed" from="NoCollectionsWarning" to="." method="_on_no_collections_warning_pressed"]
+[connection signal="pressed" from="IncorrectCollectionsWarning" to="." method="_on_incorrect_collections_warning_pressed"]
 [connection signal="pressed" from="ToolsContainer/NewCollection" to="." method="_on_new_collection_pressed"]
 [connection signal="pressed" from="ToolsContainer/AddCollection" to="." method="_on_add_collection_pressed"]
 [connection signal="pressed" from="ToolsContainer/Configuration" to="." method="_on_configuration_pressed"]

@@ -4,7 +4,10 @@
 class_name CollectionStringDict
 extends Resource
 
-@export var dict: Dictionary[StringName, Resource]
+@export var dict: Dictionary[StringName, Resource]:
+	set(value):
+		dict = value
+		emit_changed()
 
 # =============================================================
 # ========= Public Functions ==================================
@@ -13,7 +16,7 @@ func size() -> int:
 	return dict.size()
 
 
-func move_entry(from: StringName, to: StringName) -> void:
+func move_item(from: StringName, to: StringName) -> void:
 	var res: Resource = dict.get(from)
 
 	if res:
@@ -21,12 +24,12 @@ func move_entry(from: StringName, to: StringName) -> void:
 		dict[to] = res
 
 
-func add_entry(entry: StringName, resource: Resource) -> void:
-	dict[entry] = resource
+func add_item(item: StringName, resource: Resource) -> void:
+	dict[item] = resource
 
 
-func remove_entry(entry: StringName) -> void:
-	Err.try_erase(dict.erase(entry))
+func remove_item(item: StringName) -> void:
+	Err.try_erase(dict.erase(item))
 
 
 # =============================================================

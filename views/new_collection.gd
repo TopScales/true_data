@@ -185,7 +185,9 @@ func __set_config_incorrect_path(path: String) -> void:
 func _on_path_confirmed() -> void:
 	file_dialog.canceled.disconnect(_on_file_dialog_canceled)
 	set_exclusive.call_deferred(true)
-	%PathEdit.text = file_dialog.current_path
+	var path: String = file_dialog.current_path
+	%PathEdit.text = path
+	__check_path(path)
 
 
 func _on_script_confirmed() -> void:
@@ -245,8 +247,16 @@ func _on_name_edit_text_submitted(new_text: String) -> void:
 	size.y = 0
 
 
+func _on_name_edit_focus_exited() -> void:
+	_on_name_edit_text_submitted(%NameEdit.text)
+
+
 func _on_path_edit_text_submitted(new_text: String) -> void:
 	__check_path(new_text)
+
+
+func _on_path_edit_focus_exited() -> void:
+	__check_path(%PathEdit.text)
 
 
 func _on_path_browse_button_pressed() -> void:

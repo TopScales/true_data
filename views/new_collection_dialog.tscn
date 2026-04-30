@@ -76,15 +76,15 @@ Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 oversampling_override = 1.0
 title = "New Collection"
 position = Vector2i(0, 36)
-size = Vector2i(440, 228)
+size = Vector2i(468, 355)
 visible = true
 script = ExtResource("1_xvf0n")
 
 [node name="Box" type="VBoxContainer" parent="." unique_id=872830819]
 offset_left = 8.0
 offset_top = 8.0
-offset_right = 432.0
-offset_bottom = 179.0
+offset_right = 460.0
+offset_bottom = 294.0
 
 [node name="NameErrorContainer" type="HBoxContainer" parent="Box" unique_id=2102786916]
 visible = false
@@ -281,9 +281,12 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Bulk load"
+flat = true
 
+[connection signal="focus_exited" from="Box/NameContainer/NameEdit" to="." method="_on_name_edit_focus_exited"]
 [connection signal="text_submitted" from="Box/NameContainer/NameEdit" to="." method="_on_name_edit_text_submitted"]
 [connection signal="item_selected" from="Box/TypeContainer/TypeOption" to="." method="_on_type_option_item_selected"]
+[connection signal="focus_exited" from="Box/PathContainer/PathEdit" to="." method="_on_path_edit_focus_exited"]
 [connection signal="text_submitted" from="Box/PathContainer/PathEdit" to="." method="_on_path_edit_text_submitted"]
 [connection signal="pressed" from="Box/PathContainer/PathBrowseButton" to="." method="_on_path_browse_button_pressed"]
 [connection signal="pressed" from="Box/ScriptContainer/ScriptBrowseButton" to="." method="_on_script_browse_button_pressed"]

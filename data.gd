@@ -117,7 +117,7 @@ func __select_properties(
 	for prop in props_list:
 		var prop_name: String = prop["name"]
 
-		if usage != IGNORE_USAGE and not (prop["usage"] as int) & usage:
+		if usage != IGNORE_USAGE and (prop["usage"] & usage) != usage:
 			continue
 
 		if (not use_whitelist or use_whitelist and prop_name in filter) and not (use_blacklist and prop_name in filter):

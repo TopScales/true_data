@@ -50,9 +50,9 @@ func _enter_tree() -> void:
 
 	# Add data main screen.
 	_data_ctrl = preload("views/data_screen.tscn").instantiate()
+	_data_ctrl.undoredo = get_undo_redo()
 	EditorInterface.get_editor_main_screen().add_child(_data_ctrl)
 	_data_ctrl.hide()
-	_data_ctrl.undoredo = get_undo_redo()
 
 
 func _exit_tree() -> void:
@@ -79,3 +79,7 @@ func _get_plugin_name() -> String:
 
 func _get_plugin_icon() -> Texture2D:
 	return EditorInterface.get_editor_theme().get_icon(&"ResourcePreloader", &"EditorIcons")
+
+
+func _save_external_data() -> void:
+	_data_ctrl.save_data()

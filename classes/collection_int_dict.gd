@@ -4,7 +4,10 @@
 class_name CollectionIntDict
 extends Resource
 
-@export var dict: Dictionary[int, Resource]
+@export var dict: Dictionary[int, Resource]:
+	set(value):
+		dict = value
+		emit_changed()
 
 # =============================================================
 # ========= Public Functions ==================================

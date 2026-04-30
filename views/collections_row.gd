@@ -3,33 +3,39 @@
 @tool
 extends HBoxContainer
 
+signal deleted
+signal edit
+
 const Collection: GDScript = preload("res://addons/true_data/views/collection.gd")
 
 const _ADDON: StringName = &"TrueData"
 
 var collection: Collection
-var collections: CollectionStringDict
-var collection_name: StringName
+var collections: CollectionArray
 var file_dialog: FileDialog
 var delete_confirmation: ConfirmationDialog
 var undoredo: EditorUndoRedoManager
+
+var _updating: bool = false # Avoid triggering Load Check toggle signal.
 
 @onready var _name_edit: LineEdit = $NameEdit
 @onready var _path_label: Label = $PathContainer/PathLabel
 @onready var _script_button: Button = $ScriptButton
 @onready var _type_option: OptionButton = $TypeOption
 @onready var _entries_label: Label = $EntriesLabel
-@onready var _load_check: Button = $LoadCheck
+@onready var _load_check: Button = $LoadCheckCell/LoadCheck
 
 # =============================================================
 # ========= Public Functions ==================================
 
 func update_row() -> void:
-	_name_edit.text = collection_name
+	_updating = true
+	_name_edit.text = collection.resource_name
 	_path_label.text = collection.path
 	_type_option.select(collection.type)
 	_load_check.button_pressed = collection.bulk_load
 	var script_name: String = collection.collection_script.get_global_name()
+	_updating = false
 
 	if script_name.is_empty():
 		script_name = collection.collection_script.resource_path.get_basename().get_file().to_pascal_case()
@@ -39,8 +45,7 @@ func update_row() -> void:
 
 
 func set_collection_name(new_name: StringName) -> void:
-	collections.move_entry(collection_name, new_name)
-	collection_name = new_name
+	collection.resource_name = new_name
 
 
 func set_collection_path(new_path: String) -> void:
@@ -141,10 +146,7 @@ func _on_script_confirmed() -> void:
 
 
 func _on_delete_confirmed() -> void:
-	undoredo.create_action("Delete collection")
-	undoredo.add_do_method(collections, &"remove_entry", collection_name)
-	undoredo.add_undo_method(collections, &"add_entry", collection_name, collection)
-	undoredo.commit_action()
+	deleted.emit()
 
 
 func _on_file_dialog_canceled() -> void:
@@ -157,12 +159,12 @@ func _on_file_dialog_canceled() -> void:
 
 func _on_name_edit_text_submitted(new_text: String) -> void:
 	if new_text.is_empty():
-		_name_edit.text = collection_name
+		_name_edit.text = collection.resource_name
 		return
 
 	undoredo.create_action("Set collection name")
 	undoredo.add_do_method(self, &"set_collection_name", StringName(new_text))
-	undoredo.add_undo_method(self, &"set_collection_name", collection_name)
+	undoredo.add_undo_method(self, &"set_collection_name", collection.resource_name)
 	undoredo.commit_action()
 
 
@@ -171,6 +173,11 @@ func _on_name_edit_editing_toggled(toggled_on: bool) -> void:
 
 
 func _on_load_check_toggled(toggled_on: bool) -> void:
+	if _updating:
+		var icon_name: StringName = &"GuiChecked" if toggled_on else &"GuiUnchecked"
+		_load_check.icon = EditorInterface.get_editor_theme().get_icon(icon_name, &"EditorIcons")
+		return
+
 	undoredo.create_action("Set collection bulk load")
 	undoredo.add_do_method(self, &"set_collection_bulk_load", toggled_on)
 	undoredo.add_undo_method(self, &"set_collection_bulk_load", collection.bulk_load)
@@ -215,9 +222,13 @@ func _on_script_button_pressed() -> void:
 
 
 func _on_edit_button_pressed() -> void:
-	pass # Replace with function body.
+	edit.emit()
 
 
 func _on_delete_button_pressed() -> void:
-	delete_confirmation.dialog_text = "Delete collection \"%s\"?" % collection_name
+	delete_confirmation.dialog_text = "Delete collection \"%s\"?" % collection.resource_name
 	Err.conn(delete_confirmation.confirmed, _on_delete_confirmed, CONNECT_ONE_SHOT, _ADDON)
+	var cancel_func: Callable = func():
+		delete_confirmation.confirmed.disconnect(_on_delete_confirmed)
+	Err.conn(delete_confirmation.canceled, cancel_func, CONNECT_ONE_SHOT, _ADDON)
+	delete_confirmation.popup_centered()

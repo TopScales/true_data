@@ -27,7 +27,12 @@ func show_dialog() -> void:
 	var path: String = ProjectSettings.get_setting(SETTINGS_PREFIX + "collections_resource_path", "")
 
 	if path.begins_with("uid://"):
-		path = ResourceUID.uid_to_path(path)
+		var id: int = ResourceUID.text_to_id(path)
+
+		if ResourceUID.has_id(id):
+			path = ResourceUID.uid_to_path(path)
+		else:
+			path = ""
 
 	var dir: String = path.get_base_dir()
 	var file: String = path.get_file().get_basename()
@@ -101,7 +106,7 @@ func _on_confirmed() -> void:
 	var path: String = dir.path_join(file + _ext_option.get_item_text(_ext_option.selected))
 
 	if not ResourceLoader.exists(path, "Resource"):
-		var collection: CollectionStringDict = CollectionStringDict.new()
+		var collection: CollectionArray = CollectionArray.new()
 		Err.try_err(ResourceSaver.save(collection, path), "Failed to save collections resource.", _ADDON)
 
 	ProjectSettings.set_setting(SETTINGS_PREFIX + "collections_resource_path", ResourceUID.path_to_uid(path))
