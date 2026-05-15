@@ -207,6 +207,8 @@ func __get_property_cell(prop: Property, value: Variant, res: Resource) -> Contr
 			return __get_float_cell(prop, value, res)
 		TYPE_STRING:
 			return __get_string_cell(prop, value, res)
+		TYPE_COLOR:
+			return __get_color_cell(prop, value, res)
 	return null
 
 
@@ -300,6 +302,14 @@ func __get_string_cell(prop: Property, value: String, res: Resource) -> Control:
 		cell.select(index)
 		return cell
 	return null
+
+
+func __get_color_cell(prop: Property, value: Color, res: Resource) -> Control:
+	var control: ColorPickerButton = ColorPickerButton.new()
+	control.color = value
+	var f: Callable = func(new_color: Color): res.set(prop.prop_name, new_color)
+	Err.conn(control.color_changed, f, 0, _ADDON)
+	return control
 
 
 func __get_range_specs(hint_string: String) -> Dictionary[StringName, Variant]:
