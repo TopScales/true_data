@@ -6,7 +6,7 @@ extends HBoxContainer
 signal deleted
 signal edit
 
-const Collection: GDScript = preload("res://addons/true_data/views/collection.gd")
+const Collection: GDScript = preload("res://addons/true_data/classes/collection.gd")
 
 const _ADDON: StringName = &"TrueData"
 
@@ -16,26 +16,24 @@ var file_dialog: FileDialog
 var delete_confirmation: ConfirmationDialog
 var undoredo: EditorUndoRedoManager
 
-var _updating: bool = false # Avoid triggering Load Check toggle signal.
-
 @onready var _name_edit: LineEdit = $NameEdit
 @onready var _path_label: Label = $PathContainer/PathLabel
 @onready var _script_button: Button = $ScriptButton
 @onready var _type_option: OptionButton = $TypeOption
 @onready var _entries_label: Label = $EntriesLabel
-@onready var _load_check: Button = $LoadCheckCell/LoadCheck
+@onready var _load_option: OptionButton = $LoadOption
+#@onready var _load_check: Button = $LoadCheckCell/LoadCheck
 
 # =============================================================
 # ========= Public Functions ==================================
 
 func update_row() -> void:
-	_updating = true
 	_name_edit.text = collection.resource_name
 	_path_label.text = collection.path
+	_path_label.tooltip_text = collection.path
 	_type_option.select(collection.type)
-	_load_check.button_pressed = collection.bulk_load
+	_load_option.select(collection.bulk_load)
 	var script_name: String = collection.collection_script.get_global_name()
-	_updating = false
 
 	if script_name.is_empty():
 		script_name = collection.collection_script.resource_path.get_basename().get_file().to_pascal_case()
@@ -63,10 +61,9 @@ func set_collection_script(script_: GDScript) -> void:
 	_script_button.text = script_name
 
 
-func set_collection_bulk_load(bulk_load: bool) -> void:
+func set_collection_bulk_load(bulk_load: Collection.Load) -> void:
 	collection.bulk_load = bulk_load
-	var icon_name: StringName = &"GuiChecked" if bulk_load else &"GuiUnchecked"
-	_load_check.icon = EditorInterface.get_editor_theme().get_icon(icon_name, &"EditorIcons")
+	_load_option.select(bulk_load)
 
 
 # =============================================================
@@ -172,18 +169,6 @@ func _on_name_edit_editing_toggled(toggled_on: bool) -> void:
 	_name_edit.flat = not toggled_on
 
 
-func _on_load_check_toggled(toggled_on: bool) -> void:
-	if _updating:
-		var icon_name: StringName = &"GuiChecked" if toggled_on else &"GuiUnchecked"
-		_load_check.icon = EditorInterface.get_editor_theme().get_icon(icon_name, &"EditorIcons")
-		return
-
-	undoredo.create_action("Set collection bulk load")
-	undoredo.add_do_method(self, &"set_collection_bulk_load", toggled_on)
-	undoredo.add_undo_method(self, &"set_collection_bulk_load", collection.bulk_load)
-	undoredo.commit_action()
-
-
 func _on_path_browse_button_pressed() -> void:
 	if collection.type == Collection.CollectionType.FILES:
 		file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR
@@ -232,3 +217,10 @@ func _on_delete_button_pressed() -> void:
 		delete_confirmation.confirmed.disconnect(_on_delete_confirmed)
 	Err.conn(delete_confirmation.canceled, cancel_func, CONNECT_ONE_SHOT, _ADDON)
 	delete_confirmation.popup_centered()
+
+
+func _on_load_option_item_selected(index: int) -> void:
+	undoredo.create_action("Set collection bulk load")
+	undoredo.add_do_method(self, &"set_collection_bulk_load", index)
+	undoredo.add_undo_method(self, &"set_collection_bulk_load", collection.bulk_load)
+	undoredo.commit_action()

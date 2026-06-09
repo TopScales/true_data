@@ -12,25 +12,22 @@ Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
 Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 }
 
-[node name="Header" type="Button" unique_id=1086489991]
+[node name="Header" type="HBoxContainer" unique_id=853945187]
+offset_right = 278.0
+offset_bottom = 43.0
 size_flags_horizontal = 3
-text = "Header"
+theme_override_constants/separation = 0
 script = ExtResource("1_rbwn7")
 
-[node name="Options" type="Button" parent="." unique_id=525308332]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -8.0
-offset_top = -4.0
-offset_bottom = 4.0
-grow_horizontal = 0
-grow_vertical = 2
-icon = SubResource("DPITexture_u54g4")
-flat = true
+[node name="Button" type="Button" parent="." unique_id=810062643]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Header"
+text_overrun_behavior = 1
 
-[connection signal="pressed" from="." to="." method="_on_pressed"]
+[node name="Options" type="Button" parent="." unique_id=525308332]
+layout_mode = 2
+icon = SubResource("DPITexture_u54g4")
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Options" to="." method="_on_options_pressed"]

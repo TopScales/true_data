@@ -7,7 +7,7 @@ signal edit_collection(collection: Resource)
 
 const SETTINGS_PREFIX: String = "addons/true_data/"
 const Row: GDScript = preload("res://addons/true_data/views/collections_row.gd")
-const Collection: GDScript = preload("res://addons/true_data/views/collection.gd")
+const Collection: GDScript = preload("res://addons/true_data/classes/collection.gd")
 
 const _ADDON: StringName = &"TrueData"
 

@@ -6,6 +6,12 @@ extends Node
 const SETTINGS_PREFIX: String = "addons/true_data/"
 const IGNORE_USAGE: int = -1
 const INCLUDE_ALL_LEVELS: int = -1
+const INVALID_ASSET: int = -1
+const _MOD: StringName = &"Data"
+
+const Collection: GDScript = preload("res://addons/true_data/classes/collection.gd")
+
+var _collections_array: Dictionary[StringName, CollectionArray]
 
 # =============================================================
 # ========= Public Functions ==================================
@@ -96,8 +102,44 @@ func get_obj_name(obj: Object) -> String:
 	else:
 		return obj.to_string()
 
+
+func get_collection_item(collection: StringName, item: int) -> Resource:
+	if item != INVALID_ASSET:
+		var col: CollectionArray = _collections_array.get(collection)
+
+		if col:
+			if item < 0 or item >= col.size():
+				Log.error("Collection item index out of bounds.", _MOD)
+			else:
+				return col.arr[item]
+		else:
+			Log.warning("Collection '%s' not found." % collection)
+
+	return null
+
+
 # =============================================================
 # ========= Built-in Functions ================================
+
+func _ready() -> void:
+	var path: String = ProjectSettings.get_setting(SETTINGS_PREFIX + "collections_resource_path", "")
+
+	if not path.is_empty() and ResourceLoader.exists(path):
+		var collections: CollectionArray = ResourceLoader.load(path)
+
+		if collections:
+			var in_editor: bool = Engine.is_editor_hint()
+
+			for i in collections.size():
+				var collection: Collection = collections.arr[i]
+
+				if collection.bulk_load == Collection.Load.BULK_EDITOR \
+						or not in_editor and collection.bulk_load == Collection.Load.BULK:
+					match collection.type:
+						Collection.CollectionType.FILES:
+							pass
+						Collection.CollectionType.ARRAY:
+							pass
 
 # =============================================================
 # ========= Virtual Methods ===================================
@@ -122,6 +164,14 @@ func __select_properties(
 
 		if (not use_whitelist or use_whitelist and prop_name in filter) and not (use_blacklist and prop_name in filter):
 			props_out.push_back(prop)
+
+
+func __load_array_collection(collection: Collection) -> void:
+	if ResourceLoader.exists(collection.path):
+		var col: CollectionArray = ResourceLoader.load(collection.path)
+
+		if not col.resource_name.is_empty():
+			_collections_array[StringName(col.resource_name)] = col
 
 # =============================================================
 # ========= Signal Callbacks ==================================

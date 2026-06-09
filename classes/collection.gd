@@ -4,12 +4,13 @@
 extends Resource
 
 enum CollectionType { FILES, STRING_DICTIONARY, INT_DICTIONARY, ARRAY, CONFIG }
+enum Load { NO_LOAD, BULK, BULK_EDITOR }
 
 @export var path: String
 @export var type: CollectionType = CollectionType.FILES
 @export var collection_script: GDScript
 @export var entries: int = 0: get = get_entries
-@export var bulk_load: bool = false
+@export var bulk_load: Load = Load.NO_LOAD
 
 var _entries_read: bool = false
 

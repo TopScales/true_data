@@ -11,7 +11,7 @@ const ERR_PATH_INCORRECT_IDX: int = 3
 const ERR_SCRIPT_EMPTY_IDX: int = 4
 const ERR_SCRIPT_WRONG_IDX: int = 5
 
-const Collection: GDScript = preload("res://addons/true_data/views/collection.gd")
+const Collection: GDScript = preload("res://addons/true_data/classes/collection.gd")
 
 const ERR_NAME_EMPTY: int = 1
 const ERR_PATH_EMPTY: int = 2
@@ -26,6 +26,7 @@ const _ADDON: StringName = &"TrueData"
 
 var _err_status: int = OK
 var _script: GDScript
+var _type_selected: bool = false
 
 @onready var _errors: Array[Control] = [
 	$Box/NameErrorContainer,
@@ -48,11 +49,11 @@ func show_dialog() -> void:
 	%PathEdit.text = ""
 	%ScriptEdit.text = ""
 	_type.select(0)
-	%LoadCheck.button_pressed = false
+	%LoadOption.select(0)
 	_err_status = ERR_NAME_EMPTY | ERR_PATH_EMPTY | ERR_SCRIPT_EMPTY
 	get_ok_button().disabled = true
 	_script = null
-
+	_type_selected = false
 	popup_centered(Vector2i(WIDTH, 0))
 
 
@@ -65,7 +66,7 @@ func get_collection() -> Collection:
 	collection.path = %PathEdit.text
 	collection.type = %TypeOption.selected
 	collection.collection_script = _script
-	collection.bulk_load = %LoadCheck.button_pressed
+	collection.bulk_load = %LoadOption.get_selected_id()
 	return collection
 
 # =============================================================
@@ -307,8 +308,11 @@ func _on_type_option_item_selected(index: int) -> void:
 	else:
 		%ScriptBrowseButton.disabled = false
 
-	var path_incorrect_shown: bool = _errors[ERR_PATH_INCORRECT_IDX].visible
-	__check_path(%PathEdit.text)
+	if _type_selected:
+		var path_incorrect_shown: bool = _errors[ERR_PATH_INCORRECT_IDX].visible
+		__check_path(%PathEdit.text)
 
-	if not path_incorrect_shown:
-		_errors[ERR_PATH_INCORRECT_IDX].hide()
+		if not path_incorrect_shown:
+			_errors[ERR_PATH_INCORRECT_IDX].hide()
+	else:
+		_type_selected = true
