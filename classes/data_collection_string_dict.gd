@@ -1,12 +1,24 @@
 ##
 ##
 @tool
-class_name CollectionStringDict
-extends Resource
+class_name DataCollectionStringDict
+extends "res://addons/true_data/classes/data_collection.gd"
 
 @export var dict: Dictionary[StringName, Resource]:
 	set(value):
 		dict = value
+
+		if items_script:
+			for key in dict.keys():
+				var item: Resource = dict[key]
+#
+				if item == null:
+					dict[key] = items_script.new()
+				elif item.script != items_script:
+					var new_item: Resource = items_script.new()
+					__transfer_item_data(item, new_item)
+					dict[key] = new_item
+
 		emit_changed()
 
 # =============================================================
@@ -30,6 +42,10 @@ func add_item(item: StringName, resource: Resource) -> void:
 
 func remove_item(item: StringName) -> void:
 	Err.try_erase(dict.erase(item))
+
+
+func has_item(item: StringName) -> bool:
+	return dict.has(item)
 
 
 # =============================================================

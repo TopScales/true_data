@@ -49,7 +49,7 @@ func show_dialog() -> void:
 	%PathEdit.text = ""
 	%ScriptEdit.text = ""
 	_type.select(0)
-	%LoadOption.select(0)
+	%LoadCheck.button_pressed = false
 	_err_status = ERR_NAME_EMPTY | ERR_PATH_EMPTY | ERR_SCRIPT_EMPTY
 	get_ok_button().disabled = true
 	_script = null
@@ -66,11 +66,27 @@ func get_collection() -> Collection:
 	collection.path = %PathEdit.text
 	collection.type = %TypeOption.selected
 	collection.collection_script = _script
-	collection.bulk_load = %LoadOption.get_selected_id()
+	collection.bulk_load = %LoadCheck.button_pressed
 	return collection
 
 # =============================================================
 # ========= Built-in Functions ================================
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_THEME_CHANGED:
+		$Box/NameErrorContainer/ErrorIcon.texture = EditorInterface.get_editor_theme().get_icon(&"StatusError", &"EditorIcons")
+		$Box/NameErrorContainer/ErrorLabel.add_theme_color_override(&"font_color", EditorInterface.get_editor_theme().get_color(&"error_color", &"Editor"))
+		$Box/NoPathErrorContainer/ErrorIcon.texture = EditorInterface.get_editor_theme().get_icon(&"StatusError", &"EditorIcons")
+		$Box/NoPathErrorContainer/ErrorLabel.add_theme_color_override(&"font_color", EditorInterface.get_editor_theme().get_color(&"error_color", &"Editor"))
+		$Box/PathNotFoundErrorContainer/ErrorIcon.texture = EditorInterface.get_editor_theme().get_icon(&"StatusError", &"EditorIcons")
+		$Box/PathNotFoundErrorContainer/ErrorLabel.add_theme_color_override(&"font_color", EditorInterface.get_editor_theme().get_color(&"error_color", &"Editor"))
+		$Box/IncorrectPathErrorContainer/ErrorIcon.texture = EditorInterface.get_editor_theme().get_icon(&"StatusError", &"EditorIcons")
+		$Box/IncorrectPathErrorContainer/ErrorLabel.add_theme_color_override(&"font_color", EditorInterface.get_editor_theme().get_color(&"error_color", &"Editor"))
+		$Box/NoScriptErrorContainer/ErrorIcon.texture = EditorInterface.get_editor_theme().get_icon(&"StatusError", &"EditorIcons")
+		$Box/NoScriptErrorContainer/ErrorLabel.add_theme_color_override(&"font_color", EditorInterface.get_editor_theme().get_color(&"error_color", &"Editor"))
+		$Box/WrongScriptErrorContainer/ErrorIcon.texture = EditorInterface.get_editor_theme().get_icon(&"StatusError", &"EditorIcons")
+		$Box/WrongScriptErrorContainer/ErrorLabel.add_theme_color_override(&"font_color", EditorInterface.get_editor_theme().get_color(&"error_color", &"Editor"))
+
 
 # =============================================================
 # ========= Virtual Methods ===================================
@@ -138,9 +154,9 @@ func __set_dictionary_incorrect_path(path: String, is_type_string: bool) -> void
 		var res: Resource = ResourceLoader.load(path)
 
 		if is_type_string:
-			if res is CollectionStringDict:
+			if res is DataCollectionStringDict:
 				incorrect = false
-		elif res is CollectionIntDict:
+		elif res is DataCollectionIntDict:
 				incorrect = false
 
 	if incorrect:
@@ -157,7 +173,7 @@ func __set_array_incorrect_path(path: String) -> void:
 	if ResourceLoader.exists(path):
 		var res: Resource = ResourceLoader.load(path)
 
-		if res is CollectionArray:
+		if res is DataCollectionArray:
 			incorrect = false
 
 	if incorrect:
@@ -179,13 +195,18 @@ func __set_config_incorrect_path(path: String) -> void:
 		_errors[ERR_PATH_INCORRECT_IDX].show()
 
 
+func __get_focus() -> void:
+	exclusive = true
+	grab_focus()
+
+
 # =============================================================
 # ========= Signal Callbacks ==================================
 
 
 func _on_path_confirmed() -> void:
 	file_dialog.canceled.disconnect(_on_file_dialog_canceled)
-	set_exclusive.call_deferred(true)
+	__get_focus.call_deferred()
 	var path: String = file_dialog.current_path
 	%PathEdit.text = path
 	__check_path(path)
@@ -193,7 +214,7 @@ func _on_path_confirmed() -> void:
 
 func _on_script_confirmed() -> void:
 	file_dialog.canceled.disconnect(_on_file_dialog_canceled)
-	set_exclusive.call_deferred(true)
+	__get_focus.call_deferred()
 	_script = load(file_dialog.current_path)
 	_err_status &= ~ERR_SCRIPT_EMPTY
 	_errors[ERR_SCRIPT_EMPTY_IDX].hide()
@@ -231,7 +252,7 @@ func _on_file_dialog_canceled() -> void:
 			_err_status &= ~ERR_SCRIPT_EMPTY
 			_errors[ERR_SCRIPT_EMPTY_IDX].hide()
 
-	set_exclusive.call_deferred(true)
+	__get_focus.call_deferred()
 	get_ok_button().disabled = _err_status != OK
 	size.y = 0
 

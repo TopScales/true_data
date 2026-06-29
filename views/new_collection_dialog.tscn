@@ -76,18 +76,19 @@ Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 oversampling_override = 1.0
 title = "New Collection"
 position = Vector2i(0, 36)
-size = Vector2i(517, 359)
+size = Vector2i(512, 240)
 visible = true
 script = ExtResource("1_xvf0n")
 
 [node name="Box" type="VBoxContainer" parent="." unique_id=872830819]
 offset_left = 8.0
 offset_top = 8.0
-offset_right = 509.0
-offset_bottom = 298.0
+offset_right = 504.0
+offset_bottom = 191.0
 
 [node name="NameErrorContainer" type="HBoxContainer" parent="Box" unique_id=2102786916]
 visible = false
+custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 size_flags_horizontal = 4
 
@@ -99,7 +100,7 @@ stretch_mode = 3
 [node name="ErrorLabel" type="Label" parent="Box/NameErrorContainer" unique_id=978636375]
 layout_mode = 2
 size_flags_horizontal = 6
-theme_override_colors/font_color = Color(1, 0.33999997, 0.33999997, 1)
+theme_override_colors/font_color = Color(1, 0.47, 0.42, 1)
 text = "Set a name for the collection"
 horizontal_alignment = 1
 
@@ -151,6 +152,7 @@ popup/item_4/id = 4
 
 [node name="NoPathErrorContainer" type="HBoxContainer" parent="Box" unique_id=755046777]
 visible = false
+custom_minimum_size = Vector2(0, 24)
 layout_mode = 2
 size_flags_horizontal = 4
 
@@ -162,7 +164,7 @@ stretch_mode = 3
 [node name="ErrorLabel" type="Label" parent="Box/NoPathErrorContainer" unique_id=1854209473]
 layout_mode = 2
 size_flags_horizontal = 6
-theme_override_colors/font_color = Color(1, 0.33999997, 0.33999997, 1)
+theme_override_colors/font_color = Color(1, 0.47, 0.42, 1)
 text = "Set the location of the collection"
 horizontal_alignment = 1
 
@@ -179,7 +181,7 @@ stretch_mode = 3
 [node name="ErrorLabel" type="Label" parent="Box/PathNotFoundErrorContainer" unique_id=1372165850]
 layout_mode = 2
 size_flags_horizontal = 6
-theme_override_colors/font_color = Color(1, 0.33999997, 0.33999997, 1)
+theme_override_colors/font_color = Color(1, 0.47, 0.42, 1)
 text = "Path not found"
 horizontal_alignment = 1
 
@@ -196,7 +198,7 @@ stretch_mode = 3
 [node name="ErrorLabel" type="Label" parent="Box/IncorrectPathErrorContainer" unique_id=922292730]
 layout_mode = 2
 size_flags_horizontal = 6
-theme_override_colors/font_color = Color(1, 0.33999997, 0.33999997, 1)
+theme_override_colors/font_color = Color(1, 0.47, 0.42, 1)
 text = "Incorrect directory or resource"
 horizontal_alignment = 1
 
@@ -233,7 +235,7 @@ stretch_mode = 3
 [node name="ErrorLabel" type="Label" parent="Box/NoScriptErrorContainer" unique_id=2071433659]
 layout_mode = 2
 size_flags_horizontal = 6
-theme_override_colors/font_color = Color(1, 0.33999997, 0.33999997, 1)
+theme_override_colors/font_color = Color(1, 0.47, 0.42, 1)
 text = "Set a resource script for the collection"
 horizontal_alignment = 1
 
@@ -250,7 +252,7 @@ stretch_mode = 3
 [node name="ErrorLabel" type="Label" parent="Box/WrongScriptErrorContainer" unique_id=188099914]
 layout_mode = 2
 size_flags_horizontal = 6
-theme_override_colors/font_color = Color(1, 0.33999997, 0.33999997, 1)
+theme_override_colors/font_color = Color(1, 0.47, 0.42, 1)
 text = "Script does not inherit from Resource"
 horizontal_alignment = 1
 
@@ -276,14 +278,6 @@ icon = SubResource("DPITexture_xvf0n")
 flat = true
 icon_alignment = 1
 
-[node name="LoadCheck" type="CheckBox" parent="Box" unique_id=168848099]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Bulk load"
-flat = true
-
 [node name="LoadContainer" type="HBoxContainer" parent="Box" unique_id=802684699]
 layout_mode = 2
 theme_override_constants/separation = 0
@@ -291,21 +285,11 @@ theme_override_constants/separation = 0
 [node name="LoadLabel" type="Label" parent="Box/LoadContainer" unique_id=760463839]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Load:"
+text = "Bulk Load:"
 
-[node name="LoadOption" type="OptionButton" parent="Box/LoadContainer" unique_id=1842695327]
+[node name="LoadCheck" type="CheckBox" parent="Box/LoadContainer" unique_id=173979809]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-selected = 0
-item_count = 3
-popup/item_0/text = "No Load"
-popup/item_0/id = 0
-popup/item_1/text = "Bulk"
-popup/item_1/id = 1
-popup/item_2/text = "Bulk Editor"
-popup/item_2/id = 2
 
 [connection signal="focus_exited" from="Box/NameContainer/NameEdit" to="." method="_on_name_edit_focus_exited"]
 [connection signal="text_submitted" from="Box/NameContainer/NameEdit" to="." method="_on_name_edit_text_submitted"]

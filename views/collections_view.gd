@@ -1,32 +1,25 @@
-##
-##
 @tool
 extends Control
 
 signal edit_collection(collection: Resource)
 
-const SETTINGS_PREFIX: String = "addons/true_data/"
 const Row: GDScript = preload("res://addons/true_data/views/collections_row.gd")
 const Collection: GDScript = preload("res://addons/true_data/classes/collection.gd")
 
+const _SETTINGS_PREFIX: String = "addons/true_data/"
 const _ADDON: StringName = &"TrueData"
 
-@export var file_dialog: FileDialog
-
+var file_dialog: EditorFileDialog
 var undoredo: EditorUndoRedoManager
 
-@onready var _configuration: ConfirmationDialog = $Configuration
 @onready var _new_collection: ConfirmationDialog = $NewCollectionDialog
-@onready var _no_col_warn: Button = $NoCollectionsWarning
-@onready var _incorrect_col_warn: Button = $IncorrectCollectionsWarning
 @onready var _num_coll_label: Label = %NumCollectionsLabel
 @onready var _delete_confirmation: ConfirmationDialog = $DeleteConfirmation
 @onready var _spreadsheet: Control = $ScrollContainer/Spreadsheet
 
 var _collections_path: String
-var _collections: CollectionArray
+var _collections: DataCollections
 var _row_scn: PackedScene = preload("res://addons/true_data/views/collections_row.tscn")
-var _rows: Array[Row]
 
 # =============================================================
 # ========= Public Functions ==================================
@@ -53,22 +46,25 @@ func save_data() -> void:
 		Err.try_err(ResourceSaver.save(_collections, save_path), "Failed to save collections file.", _ADDON)
 
 
-func add_collection(collection: Collection) -> void:
+func add_collection(collection_name: StringName, collection: Collection) -> void:
 	if not _collections:
 		return
 
-	_collections.add_item(collection)
+	if _collections.size() == 0:
+		for child in %HeadersContainer.get_children():
+			if child is Button:
+				child.disabled = false
+
+	_collections.add_item(collection_name, collection)
 	__add_collection_row(collection)
+	_num_coll_label.text = "Collections: %d" % _collections.size()
 
 
-func remove_collection(collection: Collection) -> void:
-	for row in _rows:
-		if row.collection == collection:
-			remove_child(row)
-			row.queue_free()
-			break
-
-	_collections.remove_item(collection)
+func remove_collection(collection_name: StringName) -> void:
+	var row: Control = _spreadsheet.get_node(NodePath(collection_name))
+	row.queue_free()
+	_collections.remove_item(collection_name)
+	_num_coll_label.text = "Collections: %d" % _collections.size()
 
 	if _collections.size() == 0:
 		for child in %HeadersContainer.get_children():
@@ -80,9 +76,16 @@ func remove_collection(collection: Collection) -> void:
 # ========= Built-in Functions ================================
 
 func _ready() -> void:
-	_configuration.file_dialog = file_dialog
 	_new_collection.file_dialog = file_dialog
 	Err.conn(EditorInterface.get_resource_filesystem().filesystem_changed, _on_filesystem_changed, 0, _ADDON)
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_THEME_CHANGED:
+		$WarningBox/Icon.texture = EditorInterface.get_editor_theme().get_icon(&"NodeWarning", &"EditorIcons")
+		$WarningBox/Label.add_theme_color_override(&"font_color", EditorInterface.get_editor_theme().get_color(&"warning_color", &"Editor"))
+		%NewCollection.icon = EditorInterface.get_editor_theme().get_icon(&"Add", &"EditorIcons")
+		%AddCollection.icon = EditorInterface.get_editor_theme().get_icon(&"FileAccess", &"EditorIcons")
 
 # =============================================================
 # ========= Virtual Methods ===================================
@@ -91,33 +94,25 @@ func _ready() -> void:
 # ========= Private Functions =================================
 
 func __load_collections() -> void:
-	var path: String = ProjectSettings.get_setting(SETTINGS_PREFIX + "collections_resource_path", "")
+	var path: String = ProjectSettings.get_setting(_SETTINGS_PREFIX + "collections_resource_path", "")
+	var incorrect: bool = path.is_empty() or not ResourceLoader.exists(path)
+	_collections = null
 
-	if path.is_empty():
-		_collections = null
-		_no_col_warn.show()
-		_incorrect_col_warn.hide()
-	else:
-		_no_col_warn.hide()
+	if not incorrect:
+		_collections = ResourceLoader.load(path)
 
-		if ResourceLoader.exists(path):
-			_collections = ResourceLoader.load(path)
-
-			if _collections:
-				Err.conn(_collections.changed, reset, 0, _ADDON)
-				_incorrect_col_warn.hide()
-			else:
-				_incorrect_col_warn.show()
+		if _collections:
+			Err.conn(_collections.changed, reset, 0, _ADDON)
 		else:
-			_collections = null
-			_incorrect_col_warn.show()
+			incorrect = true
 
-	var disable: bool = _collections == null
-	%NewCollection.disabled = disable
-	%AddCollection.disabled = disable
-	_num_coll_label.text = "Collections: %d" % (0 if disable else _collections.size())
+	$WarningBox.visible = incorrect
+	%NewCollection.disabled = incorrect
+	%AddCollection.disabled = incorrect
+
+	_num_coll_label.text = "Collections: %d" % (0 if incorrect else _collections.size())
 	_collections_path = path
-	var hide_headers: bool = not _collections or _collections.size() == 0
+	var hide_headers: bool = incorrect or _collections.size() == 0
 
 	for child in %HeadersContainer.get_children():
 		if child is Button:
@@ -125,15 +120,10 @@ func __load_collections() -> void:
 
 	if _collections:
 		for i in _collections.size():
-			__add_collection_row(_collections.arr[i])
+			__add_collection_row(_collections.arr[i] as Collection)
 
 
 func __add_collection_row(collection: Collection) -> void:
-	if _collections.size() == 0:
-		for child in %HeadersContainer.get_children():
-			if child is Button:
-				child.disabled = false
-
 	var row: Row = _row_scn.instantiate() as Row
 	_spreadsheet.add_child(row)
 	row.collection = collection
@@ -164,22 +154,6 @@ func _on_row_deleted(collection: Collection) -> void:
 	undoredo.add_do_method(self, &"remove_collection", collection)
 	undoredo.add_undo_method(self, &"add_collection", collection)
 	undoredo.commit_action()
-
-
-func _on_configuration_pressed() -> void:
-	_configuration.show_dialog()
-
-
-func _on_configuration_confirmed() -> void:
-	__load_collections()
-
-
-func _on_no_collections_warning_pressed() -> void:
-	_configuration.show_dialog()
-
-
-func _on_incorrect_collections_warning_pressed() -> void:
-	_configuration.show_dialog()
 
 
 func _on_new_collection_pressed() -> void:

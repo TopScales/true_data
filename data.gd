@@ -3,21 +3,45 @@
 @tool
 extends Node
 
-const SETTINGS_PREFIX: String = "addons/true_data/"
 const IGNORE_USAGE: int = -1
 const INCLUDE_ALL_LEVELS: int = -1
 const INVALID_ASSET: int = -1
+const _SETTINGS_PREFIX: String = "addons/true_data/"
 const _MOD: StringName = &"Data"
 
 const Collection: GDScript = preload("res://addons/true_data/classes/collection.gd")
 
-var _collections_array: Dictionary[StringName, CollectionArray]
+var _collections: DataCollections
+var _collections_array: Dictionary[StringName, DataCollectionArray]
 
 # =============================================================
 # ========= Public Functions ==================================
 
 
-func get_properties_info(
+func get_script_properties_info(
+	script_: Script,
+	usage: int = IGNORE_USAGE,
+	filter_list: PackedStringArray = [],
+	is_blacklist: bool = false,
+	script_levels: int = INCLUDE_ALL_LEVELS
+) -> Array[Dictionary]:
+	var props: Array[Dictionary] = []
+	var use_whitelist: bool = not is_blacklist and not filter_list.is_empty()
+	var use_blacklist: bool = is_blacklist and not filter_list.is_empty()
+	var levels: int = 1
+	var all_props: Array[Dictionary] = script_.get_script_property_list()
+	script_ = script_.get_base_script()
+
+	while script_ and (levels < script_levels or script_levels == INCLUDE_ALL_LEVELS):
+		var p: Array[Dictionary] = script_.get_script_property_list()
+		all_props.append_array(p)
+		levels += 1
+
+	__select_properties(all_props, usage, filter_list, use_whitelist, use_blacklist, props)
+	return props
+
+
+func get_obj_properties_info(
 	obj: Object,
 	usage: int = IGNORE_USAGE,
 	filter_list: PackedStringArray = [],
@@ -93,6 +117,14 @@ func get_properties_info(
 	return props
 
 
+func bulk_load() -> void:
+	pass
+
+
+func bulk_load_threaded() -> void:
+	pass
+
+
 func get_obj_name(obj: Object) -> String:
 	if obj is Node:
 		return (obj as Node).name
@@ -105,7 +137,7 @@ func get_obj_name(obj: Object) -> String:
 
 func get_collection_item(collection: StringName, item: int) -> Resource:
 	if item != INVALID_ASSET:
-		var col: CollectionArray = _collections_array.get(collection)
+		var col: DataCollectionArray = _collections_array.get(collection)
 
 		if col:
 			if item < 0 or item >= col.size():
@@ -122,24 +154,11 @@ func get_collection_item(collection: StringName, item: int) -> Resource:
 # ========= Built-in Functions ================================
 
 func _ready() -> void:
-	var path: String = ProjectSettings.get_setting(SETTINGS_PREFIX + "collections_resource_path", "")
+	var path: String = ProjectSettings.get_setting(_SETTINGS_PREFIX + "collections_resource_path", "")
 
 	if not path.is_empty() and ResourceLoader.exists(path):
-		var collections: CollectionArray = ResourceLoader.load(path)
+		_collections = ResourceLoader.load(path) as DataCollections
 
-		if collections:
-			var in_editor: bool = Engine.is_editor_hint()
-
-			for i in collections.size():
-				var collection: Collection = collections.arr[i]
-
-				if collection.bulk_load == Collection.Load.BULK_EDITOR \
-						or not in_editor and collection.bulk_load == Collection.Load.BULK:
-					match collection.type:
-						Collection.CollectionType.FILES:
-							pass
-						Collection.CollectionType.ARRAY:
-							pass
 
 # =============================================================
 # ========= Virtual Methods ===================================
@@ -148,7 +167,7 @@ func _ready() -> void:
 # ========= Private Functions =================================
 
 
-func __select_properties(
+static func __select_properties(
 	props_list: Array[Dictionary],
 	usage: int,
 	filter: PackedStringArray,
@@ -168,7 +187,7 @@ func __select_properties(
 
 func __load_array_collection(collection: Collection) -> void:
 	if ResourceLoader.exists(collection.path):
-		var col: CollectionArray = ResourceLoader.load(collection.path)
+		var col: DataCollectionArray = ResourceLoader.load(collection.path)
 
 		if not col.resource_name.is_empty():
 			_collections_array[StringName(col.resource_name)] = col

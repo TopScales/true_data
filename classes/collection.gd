@@ -4,13 +4,13 @@
 extends Resource
 
 enum CollectionType { FILES, STRING_DICTIONARY, INT_DICTIONARY, ARRAY, CONFIG }
-enum Load { NO_LOAD, BULK, BULK_EDITOR }
 
 @export var path: String
 @export var type: CollectionType = CollectionType.FILES
 @export var collection_script: GDScript
 @export var entries: int = 0: get = get_entries
-@export var bulk_load: Load = Load.NO_LOAD
+@export var bulk_load: bool = false
+@export var styles: Dictionary[StringName, Dictionary] = {}
 
 var _entries_read: bool = false
 
@@ -18,7 +18,7 @@ var _entries_read: bool = false
 # ========= Public Functions ==================================
 
 func get_entries() -> int:
-	if not _entries_read:
+	if Engine.is_editor_hint() and not _entries_read:
 		if type == CollectionType.FILES:
 			var files: PackedStringArray = ResourceLoader.list_directory(path)
 			entries = 0

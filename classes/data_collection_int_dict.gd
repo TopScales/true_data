@@ -1,7 +1,7 @@
 ##
 ##
 @tool
-class_name CollectionIntDict
+class_name DataCollectionIntDict
 extends Resource
 
 @export var dict: Dictionary[int, Resource]:
@@ -15,6 +15,7 @@ extends Resource
 
 func size() -> int:
 	return dict.size()
+
 
 # =============================================================
 # ========= Built-in Functions ================================

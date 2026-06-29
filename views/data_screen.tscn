@@ -19,12 +19,5 @@ theme_override_constants/margin_bottom = 8
 script = ExtResource("1_opari")
 view_paths = PackedStringArray("res://addons/true_data/views/collections_view.tscn", "res://addons/true_data/views/collection_view.tscn")
 
-[node name="CollectionsView" parent="." unique_id=1880163513 node_paths=PackedStringArray("file_dialog") instance=ExtResource("1_v8p0w")]
+[node name="CollectionsView" parent="." unique_id=1880163513 instance=ExtResource("1_v8p0w")]
 layout_mode = 2
-file_dialog = NodePath("../FileDialog")
-
-[node name="FileDialog" type="FileDialog" parent="." unique_id=875190743]
-oversampling_override = 1.0
-position = Vector2i(0, 36)
-size = Vector2i(960, 680)
-transient_to_focused = true

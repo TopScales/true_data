@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cr3jxn0a7pvx7"]
+
+[ext_resource type="Script" uid="uid://x6lwyx2d54is" path="res://addons/true_data/views/properties/string_collection_item.gd" id="1_1rcp1"]
+
+[node name="StringCollectionItem" type="VBoxContainer" unique_id=1249611124]
+offset_right = 473.0
+offset_bottom = 47.0
+size_flags_horizontal = 3
+script = ExtResource("1_1rcp1")
+
+[node name="Label" type="Label" parent="." unique_id=880770892]
+layout_mode = 2
+
+[node name="Options" type="OptionButton" parent="." unique_id=598290315]
+layout_mode = 2

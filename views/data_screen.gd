@@ -15,6 +15,7 @@ var undoredo: EditorUndoRedoManager
 
 var _current_view_ctrl: Control
 var _current_view: View = View.COLLECTIONS
+var _file_dialog: EditorFileDialog
 
 
 # =============================================================
@@ -28,10 +29,10 @@ func change_view(view_index: View) -> void:
 	_current_view_ctrl.queue_free()
 	var scn: PackedScene = load(view_paths[view_index])
 	_current_view_ctrl = scn.instantiate()
+	_current_view_ctrl.undoredo = undoredo
+	_current_view_ctrl.file_dialog = _file_dialog
 	add_child(_current_view_ctrl)
 	move_child(_current_view_ctrl, 0)
-	_current_view_ctrl.undoredo = undoredo
-	_current_view_ctrl.file_dialog = $FileDialog
 	_current_view = view_index
 	__connect_view()
 
@@ -40,8 +41,14 @@ func change_view(view_index: View) -> void:
 # ========= Built-in Functions ================================
 
 func _enter_tree() -> void:
+	if not _file_dialog:
+		_file_dialog = EditorFileDialog.new()
+		add_child(_file_dialog)
+		_file_dialog.hide()
+
 	_current_view_ctrl = get_child(0)
 	_current_view_ctrl.undoredo = undoredo
+	_current_view_ctrl.file_dialog = _file_dialog
 
 
 func _ready() -> void:
