@@ -2,7 +2,7 @@
 extends EditorPlugin
 
 const SETTINGS_PREFIX: String = "addons/true_data/"
-const ADDON_PATH := "res://addons/true_data/"
+const ADDON_PATH : String = "res://addons/true_data/"
 const DEFAULT_DATA_PATH: String = "data.gd"
 const DATA_NAME: String = "Data"
 
@@ -27,6 +27,7 @@ func _enter_tree() -> void:
 		hint_string = "*.gd"
 	})
 	ProjectSettings.set_initial_value(SETTINGS_PREFIX + "data_script_path", ADDON_PATH + DEFAULT_DATA_PATH)
+	ProjectSettings.set_restart_if_changed(SETTINGS_PREFIX + "data_script_path", true)
 
 	# Add Data autoload.
 	_data_path = ProjectSettings.get_setting(SETTINGS_PREFIX + "data_script_path")
@@ -49,10 +50,11 @@ func _enter_tree() -> void:
 	ProjectSettings.set_initial_value(SETTINGS_PREFIX + "collections_resource_path", "")
 
 	# Add data main screen.
-	_data_ctrl = preload("views/data_screen.tscn").instantiate()
-	_data_ctrl.undoredo = get_undo_redo()
-	EditorInterface.get_editor_main_screen().add_child(_data_ctrl)
-	_data_ctrl.hide()
+	#_data_ctrl = preload("views/data_screen.tscn").instantiate()
+	#_data_ctrl.undoredo = get_undo_redo()
+	#EditorInterface.get_editor_main_screen().add_child(_data_ctrl)
+	#_data_ctrl.hide()
+	_active = true
 
 
 func _exit_tree() -> void:
@@ -62,24 +64,24 @@ func _exit_tree() -> void:
 	remove_autoload_singleton(DATA_NAME)
 	ProjectSettings.clear(SETTINGS_PREFIX + "data_script_path")
 	ProjectSettings.clear(SETTINGS_PREFIX + "collections_resource_path")
-	_data_ctrl.queue_free()
+	#_data_ctrl.queue_free()
 
 
-func _make_visible(visible: bool) -> void:
-	_data_ctrl.visible = visible
+#func _make_visible(visible: bool) -> void:
+	#_data_ctrl.visible = visible
 
 
-func _has_main_screen() -> bool:
-	return true
+#func _has_main_screen() -> bool:
+	#return true
 
 
-func _get_plugin_name() -> String:
-	return "Data"
+#func _get_plugin_name() -> String:
+	#return "Data"
 
 
-func _get_plugin_icon() -> Texture2D:
-	return EditorInterface.get_editor_theme().get_icon(&"ResourcePreloader", &"EditorIcons")
+#func _get_plugin_icon() -> Texture2D:
+	#return EditorInterface.get_editor_theme().get_icon(&"ResourcePreloader", &"EditorIcons")
 
 
-func _save_external_data() -> void:
-	_data_ctrl.save_data()
+#func _save_external_data() -> void:
+	#_data_ctrl.save_data()
